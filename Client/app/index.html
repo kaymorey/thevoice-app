@@ -11,7 +11,8 @@
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/reset.css">
+        <link rel="stylesheet" href="styles/app.css">
         <!-- endbuild -->
     </head>
     <body>
@@ -19,17 +20,13 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-
-        <div class="container">
-            <div class="jumbotron">
-                <p class="lead">Always a pleasure scaffolding your apps.</p>
-            </div>
-        </div>
+        <div id="circles"></div>
 
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
         <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/raphael/raphael-min.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
