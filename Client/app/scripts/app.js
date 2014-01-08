@@ -12,8 +12,12 @@ $(function() {
     blue = "#4bcddd",
     background = "#d10000";
 
+    // Raphael objects
+    paperCirclesWidth = SCREEN_WIDTH * 66/100;
+    paperCirclesHeight = SCREEN_HEIGHT / 2;
+
     // Create paper Raphael
-    var paper = Raphael(document.getElementById("circles"), SCREEN_WIDTH * 2/3, SCREEN_HEIGHT / 2);
+    var paperCircles = Raphael(document.getElementById("circles"), paperCirclesWidth, paperCirclesHeight);
 
     var particles = [];
 
@@ -23,8 +27,8 @@ $(function() {
         this.velY = Math.random() * 2 + 0.5;
 
         // Position
-        this.x = SCREEN_WIDTH / 2;
-        this.y = SCREEN_HEIGHT / 2;
+        this.x = paperCirclesWidth / 2;
+        this.y = paperCirclesHeight;
 
         // Random color
         var color = Math.floor(Math.random() * 3 + 1);
@@ -49,53 +53,53 @@ $(function() {
             var id = this.data.id;
             var data = this.data;
 
-            var circle = paper.circle(this.x, this.y, this.radius)
+            var circle = paperCircles.circle(this.x, this.y, this.radius)
             .attr('fill', this.color)
             .attr('stroke', '#FFF')
             .attr('stroke-width', 2);
 
-            var cx = Math.floor(Math.random() * SCREEN_WIDTH);
+            var cx = Math.floor(Math.random() * paperCirclesWidth);
             var cy = 0 - this.radius;
             var speed = Math.floor(Math.random() * 2500 + 3000);
             circle.animate({cx: cx, cy: cy}, speed, 'linear', function() {
-                    circle.remove();
+                circle.remove();
             });
             circle.toBack();
-            
+
             circle.hover(function() {
-                    circle.pause();
-                    circle.attr('stroke', '#FFF');
-                    circle.toFront();
+                circle.pause();
+                circle.attr('stroke', '#FFF');
+                circle.toFront();
             },
             function() {
-                    circle.animate({cx: cx, cy: cy}, speed, 'linear', function() {
-                            circle.remove();
-                    });
-                    circle.attr('stroke', '#FFF');
-                    $.fancybox.close();
+                circle.animate({cx: cx, cy: cy}, speed, 'linear', function() {
+                        circle.remove();
+                });
+                circle.attr('stroke', '#FFF');
+                $.fancybox.close();
             })
             circle.click(function() {
-                    var user = data.user;
-                    var template = '<div class="tweet">';
-                            template += '<img src ="'+user.profile_image_url+'" alt="" />';
-                            template += '<div class="user">';
-                                    template += '<span class="name">'+user.name+'</span><br />';
-                                    template += '<span class="screen-name">@'+user.screen_name+'</span>';
-                            template += '</div>';
-                            template += '<div class="clear"></div>';
-                            template += '<p class="text">'+data.text+'</p>';
-                    template += '</div>';
-                    $.fancybox.open( {
-                            content: template,
-                            closeBtn: false,
-                            autoSize: false,
-                            width: 500,
-                            height: 'auto',
-                            padding: 0,
-                            helpers: {
-                                    overlay: null
-                            }
-                    });
+                var user = data.user;
+                var template = '<div class="tweet">';
+                        template += '<img src ="'+user.profile_image_url+'" alt="" />';
+                        template += '<div class="user">';
+                                template += '<span class="name">'+user.name+'</span><br />';
+                                template += '<span class="screen-name">@'+user.screen_name+'</span>';
+                        template += '</div>';
+                        template += '<div class="clear"></div>';
+                        template += '<p class="text">'+data.text+'</p>';
+                template += '</div>';
+                $.fancybox.open( {
+                        content: template,
+                        closeBtn: false,
+                        autoSize: false,
+                        width: 500,
+                        height: 'auto',
+                        padding: 0,
+                        helpers: {
+                                overlay: null
+                        }
+                });
             });
         },
         update: function() {
