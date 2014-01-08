@@ -16,6 +16,9 @@ $(function() {
     paperCirclesWidth = SCREEN_WIDTH * 66/100;
     paperCirclesHeight = SCREEN_HEIGHT / 2;
 
+    paperChartWidth = paperCirclesWidth;
+    paperChartHeight = paperCirclesHeight;
+
     // Create paper Raphael
     var paperCircles = Raphael(document.getElementById("circles"), paperCirclesWidth, paperCirclesHeight);
 
@@ -33,11 +36,18 @@ $(function() {
         // Random color
         var color = Math.floor(Math.random() * 3 + 1);
         switch(color) {
-                case 1: this.color = yellow; break;
-                case 2: this.color = blue; break;
-                case 3: this.color = green; break;
-                default: this.color = yellow;
+            case 1: this.color = yellow; break;
+            case 2: this.color = blue; break;
+            case 3: this.color = green; break;
+            default: this.color = yellow;
         }
+
+        if(this.color == blue)
+            this.colorName = 'blue'
+        else if(this.color == green)
+            this.colorName = 'green'
+        else
+            this.colorName = 'yellow'
 
         // Length
         this.radius = data.text.length / 3;
@@ -52,6 +62,7 @@ $(function() {
             var text = this.data.text;
             var id = this.data.id;
             var data = this.data;
+            var colorName = this.colorName;
 
             var circle = paperCircles.circle(this.x, this.y, this.radius)
             .attr('fill', this.color)
@@ -78,27 +89,28 @@ $(function() {
                 circle.attr('stroke', '#FFF');
                 $.fancybox.close();
             })
+
             circle.click(function() {
                 var user = data.user;
-                var template = '<div class="tweet">';
-                        template += '<img src ="'+user.profile_image_url+'" alt="" />';
-                        template += '<div class="user">';
-                                template += '<span class="name">'+user.name+'</span><br />';
-                                template += '<span class="screen-name">@'+user.screen_name+'</span>';
-                        template += '</div>';
-                        template += '<div class="clear"></div>';
-                        template += '<p class="text">'+data.text+'</p>';
+                var template = '<div class="tweet '+colorName+'">';
+                    template += '<img src ="'+user.profile_image_url+'" alt="" />';
+                    template += '<div class="user">';
+                            template += '<span class="name">'+user.name+'</span><br />';
+                            template += '<span class="screen-name">@'+user.screen_name+'</span>';
+                    template += '</div>';
+                    template += '<div class="clear"></div>';
+                    template += '<p class="text">'+data.text+'</p>';
                 template += '</div>';
-                $.fancybox.open( {
-                        content: template,
-                        closeBtn: false,
-                        autoSize: false,
-                        width: 500,
-                        height: 'auto',
-                        padding: 0,
-                        helpers: {
-                                overlay: null
-                        }
+                $.fancybox.open({
+                    content: template,
+                    closeBtn: false,
+                    autoSize: false,
+                    width: 500,
+                    height: 'auto',
+                    padding: 0,
+                    helpers: {
+                            overlay: null
+                    }
                 });
             });
         },

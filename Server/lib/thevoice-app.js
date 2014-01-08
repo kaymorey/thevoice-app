@@ -95,7 +95,7 @@ var twitterClient = new twitter({
     access_token_secret: 'qtMhkuXiWRLjcKRku5eMEANQp3JmKCturbIrp5x1U'
 });
 
-twitterClient.stream('statuses/filter', {'track' : 'dieudonné'}, function (stream) {
+twitterClient.stream('statuses/filter', {'track' : '#music'}, function (stream) {
     stream.on('data', function (data) {
         console.log(data.text);
         pubsub.emit('tweet', data);
