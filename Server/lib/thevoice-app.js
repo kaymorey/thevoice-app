@@ -104,6 +104,13 @@ twitterClient.stream('statuses/filter', {'track' : 'dieudonné'}, function (stre
 
 io.sockets.on('connection', function (socket) {
     pubsub.on('tweet', function (tweet) {
+        if(tweet.retweeted_status == null) {
+            stats.update(tweet);
+            socket.emit('tweet', tweet, stats);
+        }
+        else if(tweet.retweeted_status.retweet_count > stats.mostRetweeted.retweet_count || stats.mostRetweeted == '') {
+            stats.mostRetweeted = tweet.retweeted_status;
+        }
         stats.update(tweet);
         socket.emit('tweet', tweet, stats);         
     });

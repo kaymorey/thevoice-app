@@ -96,16 +96,8 @@ $(function() {
             })
 
             circle.click(function() {
-                var user = data.user;
-                var template = '<div class="tweet '+colorName+'">';
-                    template += '<img src ="'+user.profile_image_url+'" alt="" />';
-                    template += '<div class="user">';
-                        template += '<span class="name">'+user.name+'</span><br />';
-                        template += '<span class="screen-name">@'+user.screen_name+'</span>';
-                    template += '</div>';
-                    template += '<div class="clear"></div>';
-                    template += '<p class="text">'+data.text+'</p>';
-                template += '</div>';
+                var template = tweetTemplate(data, colorName);
+               
                 $.fancybox.open({
                     content: template,
                     closeBtn: false,
@@ -123,6 +115,20 @@ $(function() {
             this.x += this.velX;
             this.y -= this.velY;
         }
+    }
+
+    tweetTemplate = function(data, elmtClass) {
+         var template = '<div class="tweet '+elmtClass+'">';
+            template += '<img src ="'+data.user.profile_image_url+'" alt="" />';
+            template += '<div class="user">';
+                template += '<span class="name">'+data.user.name+'</span><br />';
+                template += '<span class="screen-name">@'+data.user.screen_name+'</span>';
+            template += '</div>';
+            template += '<div class="clear"></div>';
+            template += '<p class="text">'+data.text+'</p>';
+        template += '</div>';
+
+        return template;
     }
 
     /***************************
@@ -162,7 +168,13 @@ $(function() {
             this.coachs = data.coachs;
         },
         render: function() {
-            $('#stats .total .number').html(this.total);
+            // Total tweets
+            $('div#stats .total .number').html(this.total);
+
+            // Most retweeted
+            var template = tweetTemplate(this.mostRetweeted, 'rt');
+            $('div#stats .rt .data').html(template);
+            $('div#stats .rt .number').html(this.mostRetweeted.retweet_count);
         }
 
     }

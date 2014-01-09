@@ -30,6 +30,7 @@
 *****************************/
 body {
     font-family: 'PatuaOne', Arial, sans-serif;
+    overflow: hidden;
 }
 
 h1 {
@@ -86,17 +87,58 @@ div#stats section {
     padding: 20px 0;
 }
 
-div#stats .total {
+div#stats section.total {
     border-bottom: solid #2c3e50 3px;
     text-align: center;
-    font-size: 24px;
+    font-size: 18px;
 }
-div#stats .total .number {
+div#stats section.total .number {
     font-size: 40px;
 }
 
+div#stats section.rt {
+    border-bottom: solid #2c3e50 3px;
+    text-align: center;
+}
+div#stats section.rt h2 {
+    padding-bottom: 8px;
+    font-size: 22px;
+}
+div#stats section.rt .number {
+    font-size: 30px;
+}
+
+div#stats section.coachs {
+    position: relative;
+}
+div#stats section.coachs h2 {
+    padding-bottom: 8px;
+    font-size: 22px;
+    text-align: center;
+}
+div#stats section.coachs img {
+    height: 150px;
+    position: absolute;
+}
+div#stats section.coachs img.first {
+    top: 20px;
+    left: 20px;
+}
+div#stats section.coachs img.second {
+    top: 20px;
+    right: 20px;
+}
+div#stats section.coachs img.third {
+    top: 200px;
+    left: 20px;
+}
+div#stats section.coachs img.fourth {
+    top: 200px;
+    right: 20px;
+}
+
 /****************************
-*        FANCY TWEET        *
+*           TWEET           *
 *****************************/
 
 div.fancybox-wrap, div.fancybox-skin, div.fancybox-outer, div.tweet {
@@ -115,12 +157,18 @@ div.tweet {
     padding: 20px;
     background-color: #f7f4e3;
 }
+div.tweet.rt {
+    padding: 20px 10px 10px 15px;
+}
 
 div.tweet img {
     float: left;
     padding-right: 15px;
 }
 
+div.tweet .user {
+    text-align: left;
+}
 div.tweet.yellow .user {
     color: #fab13b;
 }
@@ -133,9 +181,11 @@ div.tweet.blue .user {
 
 div.tweet .text {
     padding-top: 5px;
+    margin-left: 63px;
     font-family: 'Lato', Arial, sans-serif;
     font-size: 13px;
     line-height: 16px;
+    text-align: left;
 }
 
 div.tweet .user .name {
