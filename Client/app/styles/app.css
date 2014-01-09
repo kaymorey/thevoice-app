@@ -69,6 +69,33 @@ div#linechart {
 
 
 /****************************
+*           STATS           *
+*****************************/
+
+div#stats {
+    width: 33%;
+    height: 100%;
+    background-color: #f7f4e3;
+    color: #2c3e50;
+    position: absolute;
+    left: 66%;
+    top: 0;
+}
+
+div#stats section {
+    padding: 20px 0;
+}
+
+div#stats .total {
+    border-bottom: solid #2c3e50 3px;
+    text-align: center;
+    font-size: 24px;
+}
+div#stats .total .number {
+    font-size: 40px;
+}
+
+/****************************
 *        FANCY TWEET        *
 *****************************/
 

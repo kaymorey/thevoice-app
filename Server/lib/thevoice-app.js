@@ -26,11 +26,11 @@ var Linechart = function() {
 }
 Linechart.prototype = {
     update: function() {
-            this.tweetMinutes+= 1;
+        this.tweetMinutes+= 1;
     },
     interval: function() {
-            this.minutesCount += 1;
-            this.path += "L"+(this.minutesCount*this.width/this.intervals[this.intervals.length-1])+","+(this.height-(this.tweetMinutes*30*this.height/this.max));
+        this.minutesCount += 1;
+        this.path += "L"+(this.minutesCount*this.width/this.intervals[this.intervals.length-1])+","+(this.height-(this.tweetMinutes*30*this.height/this.max));
     }
 }
 
@@ -42,20 +42,20 @@ var Stats = function() {
 
     this.coachs = {
         'florent': {
-                'name': 'Florent',
-                'total': 0
+            'name': 'Florent',
+            'total': 0
         },
         'jenifer': {
-                'name': 'Jenifer',
-                'total': 0
+            'name': 'Jenifer',
+            'total': 0
         },
         'mika': {
-                'name': 'Mika',
-                'total': 0
+            'name': 'Mika',
+            'total': 0
         },
         'garou': {
-                'name': 'Garou',
-                'total': 0
+            'name': 'Garou',
+            'total': 0
         },
         'total': 0
     }
@@ -95,7 +95,7 @@ var twitterClient = new twitter({
     access_token_secret: 'qtMhkuXiWRLjcKRku5eMEANQp3JmKCturbIrp5x1U'
 });
 
-twitterClient.stream('statuses/filter', {'track' : '#music'}, function (stream) {
+twitterClient.stream('statuses/filter', {'track' : 'dieudonné'}, function (stream) {
     stream.on('data', function (data) {
         console.log(data.text);
         pubsub.emit('tweet', data);
@@ -105,6 +105,6 @@ twitterClient.stream('statuses/filter', {'track' : '#music'}, function (stream) 
 io.sockets.on('connection', function (socket) {
     pubsub.on('tweet', function (tweet) {
         stats.update(tweet);
-        socket.emit('tweet', tweet);         
+        socket.emit('tweet', tweet, stats);         
     });
 });

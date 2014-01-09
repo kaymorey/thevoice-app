@@ -10,7 +10,7 @@ $(function() {
     red = "#d10000",
     green = "#70ad88",
     blue = "#4bcddd",
-    background = "#d10000";
+    red = "#d10000";
 
     // Raphael objects
     paperCirclesWidth = SCREEN_WIDTH * 66/100;
@@ -21,6 +21,11 @@ $(function() {
 
     // Create paper Raphael
     var paperCircles = Raphael(document.getElementById("circles"), paperCirclesWidth, paperCirclesHeight);
+    var paperChart = Raphael(document.getElementById("linechart"), paperChartWidth, paperChartHeight);
+
+    /***************************
+     *        PARTICLES        *
+     ***************************/
 
     var particles = [];
 
@@ -84,7 +89,7 @@ $(function() {
             },
             function() {
                 circle.animate({cx: cx, cy: cy}, speed, 'linear', function() {
-                        circle.remove();
+                    circle.remove();
                 });
                 circle.attr('stroke', '#FFF');
                 $.fancybox.close();
@@ -95,8 +100,8 @@ $(function() {
                 var template = '<div class="tweet '+colorName+'">';
                     template += '<img src ="'+user.profile_image_url+'" alt="" />';
                     template += '<div class="user">';
-                            template += '<span class="name">'+user.name+'</span><br />';
-                            template += '<span class="screen-name">@'+user.screen_name+'</span>';
+                        template += '<span class="name">'+user.name+'</span><br />';
+                        template += '<span class="screen-name">@'+user.screen_name+'</span>';
                     template += '</div>';
                     template += '<div class="clear"></div>';
                     template += '<p class="text">'+data.text+'</p>';
@@ -109,7 +114,7 @@ $(function() {
                     height: 'auto',
                     padding: 0,
                     helpers: {
-                            overlay: null
+                        overlay: null
                     }
                 });
             });
@@ -120,10 +125,61 @@ $(function() {
         }
     }
 
+    /***************************
+     *          STATS          *
+     ***************************/
+
+     var Stats = function() {
+        this.total = 0;
+
+        this.mostRetweeted = '';
+
+        this.coachs = {
+            'florent': {
+                    'name': 'Florent',
+                    'total': 0
+            },
+            'jenifer': {
+                    'name': 'Jenifer',
+                    'total': 0
+            },
+            'mika': {
+                    'name': 'Mika',
+                    'total': 0
+            },
+            'garou': {
+                    'name': 'Garou',
+                    'total': 0
+            },
+            'total': 0
+        }
+    }
+
+    Stats.prototype = {
+        data: function(data) {
+            this.total = data.total;
+            this.mostRetweeted = data.mostRetweeted;
+            this.coachs = data.coachs;
+        },
+        render: function() {
+            $('#stats .total .number').html(this.total);
+        }
+
+    }
+
+    var stats = new Stats();
+
+    /***************************
+     *      SOCKET TWEET       *
+     ***************************/
+
     socket.on('tweet', function (tweet, dataStats) {
         var p = new Particle(tweet);
         //particles.push(p);
         p.render();
+
+        stats.data(dataStats);
+        stats.render();
     });
 
 
