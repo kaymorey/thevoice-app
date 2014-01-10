@@ -97,7 +97,7 @@ $(function() {
 
             circle.click(function() {
                 var template = tweetTemplate(data, colorName);
-               
+
                 $.fancybox.open({
                     content: template,
                     closeBtn: false,
@@ -180,6 +180,10 @@ $(function() {
     }
 
     var stats = new Stats();
+
+    /*var r = Raphael(10, 50, 640, 480);
+    console.log(r);
+    var pie = r.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2], {donut : true});*/
 
     /***************************
      *      SOCKET TWEET       *
