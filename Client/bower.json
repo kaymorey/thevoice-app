@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "dependencies": {
     "sass-bootstrap": "~3.0.0",
-    "requirejs": "~2.1.8",
     "jquery": "~1.10.2",
     "raphael": "~2.1.2",
     "fancybox": "~2.1.5",

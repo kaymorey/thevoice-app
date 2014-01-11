@@ -134,6 +134,67 @@ $(function() {
     }
 
     /***************************
+     *        LINECHART        *
+     ***************************/
+
+    valuesX = [];
+    for(var i = 0; i <= 160; i++) {
+        valuesX.push(i);
+    }
+
+    var Linechart = function(width, height, intervals, max) {
+        this.width = width;
+        this.height = height;
+        this.valuesX = valuesX;
+        this.valuesY = [];
+        this.intervals = intervals;
+        this.tweetMinutes = 0;
+        this.smallInterval = 0;
+        this.max = max;
+    }
+
+    Linechart.prototype = {
+        update: function(tweetMinutes) {
+            /*this.smallInterval += 1;
+            this.tweetMinutes = tweetMinutes;*/
+        },
+        data: function(data) {
+            this.valuesY = data.valuesY;
+        },
+        render: function(path) {
+            var i = 0;
+            var length = this.intervals.length;
+
+            // X Axis
+            paperChart.path("M0,"+this.height+"L"+this.width+","+this.height)
+                .attr('stroke', red)
+                .attr('stroke-width', 3);
+
+            // Intervals
+            for(i = 0; i < length; i++) {
+                paperChart.path("M"+this.intervals[i]*this.width/this.intervals[length-1]+","+(this.height-10)+"L"+this.intervals[i]*this.width/this.intervals[length-1]+","+this.height)
+                .attr('stroke', red)
+                .attr('stroke-width', 3);
+            }
+
+            // Graph path
+            paperChart.linechart(0, 0, this.width, this.height, this.valuesX, this.valuesY, {
+                smooth: true, 
+                colors: ['#FFF']
+            });
+        }
+    }
+
+
+    var linechartWidth = 700;
+    var linechartHeight = 270;
+    var linechartMax = 0;
+    var intervals = [0, 40, 70, 100, 130, 160];
+
+    var linechart = new Linechart(linechartWidth, linechartHeight, intervals, linechartMax);
+    linechart.render();
+
+    /***************************
      *          STATS          *
      ***************************/
 
@@ -209,7 +270,7 @@ $(function() {
     var stats = new Stats();
 
     /***************************
-     *      SOCKET TWEET       *
+     *      SOCKET EVENTS      *
      ***************************/
 
     socket.on('tweet', function (tweet, dataStats) {
@@ -219,6 +280,11 @@ $(function() {
 
         stats.data(dataStats);
         stats.render();
+    });
+
+    socket.on('smallInterval', function (dataLinechart) {
+        linechart.data(dataLinechart);
+        linechart.render();
     });
 
 

@@ -16,10 +16,11 @@ var pubsub = new EventEmitter();
 var Linechart = function() {
     this.tweetMinutes = 0;
     this.minutesCount = 0;
+    this.valuesY = [0];
 
     this.width = 700;
-    this.height = 250;
-    this.max = 2500;
+    this.height = 270;
+    this.max = 0;
     this.intervals = [0, 40, 70, 100, 130, 160, 175];
 
     this.path = "M0,"+this.height;
@@ -30,7 +31,10 @@ Linechart.prototype = {
     },
     interval: function() {
         this.minutesCount += 1;
-        this.path += "L"+(this.minutesCount*this.width/this.intervals[this.intervals.length-1])+","+(this.height-(this.tweetMinutes*30*this.height/this.max));
+        this.valuesY.push(this.tweetMinutes);
+        if(this.tweetMinutes > this.max) {
+            this.max = this.tweetMinutes;
+        }
     }
 }
 
@@ -103,13 +107,24 @@ twitterClient.stream('statuses/filter', {'track' : '#thevoice'}, function (strea
         else if(data.retweeted_status.retweet_count > stats.mostRetweeted.retweet_count || stats.mostRetweeted == '') {
             stats.mostRetweeted = data.retweeted_status;
         }
-        console.log(data.text);
+        // console.log(data.text);
+        linechart.update();
         pubsub.emit('tweet', data);
     });
 });
 
+setInterval(function() {
+    linechart.interval();
+    pubsub.emit('smallInterval', linechart);
+    linechart.tweetMinutes = 0;
+},60000);
+
 io.sockets.on('connection', function (socket) {
     pubsub.on('tweet', function (tweet) {
         socket.emit('tweet', tweet, stats);     
+    });
+
+    pubsub.on('smallInterval', function (linechart) {
+        socket.emit('smallInterval', linechart);
     });
 });
