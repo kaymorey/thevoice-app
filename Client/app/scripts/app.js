@@ -10,6 +10,7 @@ $(function() {
     red = "#d10000",
     green = "#70ad88",
     blue = "#4bcddd",
+    darkenBlue = "#2c3e50",
     red = "#d10000";
 
     // Raphael objects
@@ -22,6 +23,7 @@ $(function() {
     // Create paper Raphael
     var paperCircles = Raphael(document.getElementById("circles"), paperCirclesWidth, paperCirclesHeight);
     var paperChart = Raphael(document.getElementById("linechart"), paperChartWidth, paperChartHeight);
+    var paperPie = Raphael(document.getElementById("pie"), 200, 200);
 
     /***************************
      *        PARTICLES        *
@@ -175,15 +177,36 @@ $(function() {
             var template = tweetTemplate(this.mostRetweeted, 'rt');
             $('div#stats .rt .data').html(template);
             $('div#stats .rt .number').html(this.mostRetweeted.retweet_count);
-        }
 
+            var total = this.coachs['total'];
+            var florent = this.coachs['florent']['total'] / total * 100;
+            var jenifer = this.coachs['jenifer']['total'] / total * 100;
+            var mika = this.coachs['mika']['total'] / total * 100;
+            var garou = this.coachs['garou']['total'] / total * 100;
+
+            var pie = paperPie.piechart(100, 100, 90, [florent, jenifer, garou, mika], {
+                donut : true, 
+                donutFill : '#f7f4e3',
+                colors: [darkenBlue, yellow, green, blue],
+                sort: false
+            });
+
+            pie.hover(function() {
+                this.sector.stop();
+                this.sector.scale(1.1, 1.1, this.cx, this.cy);
+
+                var value = this.sector.value.value;
+                value = Math.round(value);
+                tooltip = paperPie.text(100, 100, value+'%').attr({'font-size': 35, "fill":'#000'});
+            },
+            function() {
+                this.sector.animate({ transform: 's1 1 ' + this.cx + ' ' + this.cy }, 500, 'bounce');
+                tooltip.remove();
+            });
+        }
     }
 
     var stats = new Stats();
-
-    /*var r = Raphael(10, 50, 640, 480);
-    console.log(r);
-    var pie = r.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2], {donut : true});*/
 
     /***************************
      *      SOCKET TWEET       *

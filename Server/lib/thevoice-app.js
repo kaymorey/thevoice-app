@@ -95,8 +95,14 @@ var twitterClient = new twitter({
     access_token_secret: 'qtMhkuXiWRLjcKRku5eMEANQp3JmKCturbIrp5x1U'
 });
 
-twitterClient.stream('statuses/filter', {'track' : 'dieudonné'}, function (stream) {
+twitterClient.stream('statuses/filter', {'track' : '#thevoice'}, function (stream) {
     stream.on('data', function (data) {
+        if(data.retweeted_status == null) {
+            stats.update(data);
+        }
+        else if(data.retweeted_status.retweet_count > stats.mostRetweeted.retweet_count || stats.mostRetweeted == '') {
+            stats.mostRetweeted = data.retweeted_status;
+        }
         console.log(data.text);
         pubsub.emit('tweet', data);
     });
@@ -104,14 +110,6 @@ twitterClient.stream('statuses/filter', {'track' : 'dieudonné'}, function (stre
 
 io.sockets.on('connection', function (socket) {
     pubsub.on('tweet', function (tweet) {
-        if(tweet.retweeted_status == null) {
-            stats.update(tweet);
-            socket.emit('tweet', tweet, stats);
-        }
-        else if(tweet.retweeted_status.retweet_count > stats.mostRetweeted.retweet_count || stats.mostRetweeted == '') {
-            stats.mostRetweeted = tweet.retweeted_status;
-        }
-        stats.update(tweet);
-        socket.emit('tweet', tweet, stats);         
+        socket.emit('tweet', tweet, stats);     
     });
 });

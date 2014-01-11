@@ -30,7 +30,6 @@
 *****************************/
 body {
     font-family: 'PatuaOne', Arial, sans-serif;
-    overflow: hidden;
 }
 
 h1 {
@@ -111,30 +110,66 @@ div#stats section.rt .number {
 div#stats section.coachs {
     position: relative;
 }
+
 div#stats section.coachs h2 {
     padding-bottom: 8px;
     font-size: 22px;
     text-align: center;
 }
+
 div#stats section.coachs img {
+    height: 150px;
+}
+
+div#stats section.coachs div.coach {
+    width: 101px;
     height: 150px;
     position: absolute;
 }
-div#stats section.coachs img.first {
+div#stats section.coachs div.first {
     top: 20px;
     left: 20px;
 }
-div#stats section.coachs img.second {
+div#stats section.coachs div.second {
     top: 20px;
     right: 20px;
 }
-div#stats section.coachs img.third {
+div#stats section.coachs div.third {
+    top: 200px;
+    right: 20px;
+}
+div#stats section.coachs div.fourth {
     top: 200px;
     left: 20px;
 }
-div#stats section.coachs img.fourth {
-    top: 200px;
-    right: 20px;
+
+div#stats section.coachs div legend {
+    background-image: -moz-linear-gradient(100% 100% 180deg, rgba(0,0,0,.25), rgba(0,0,0,.75));
+    position: absolute;
+    bottom: 0px;
+}
+
+div#stats section.coachs div.first legend {
+    color: #2c3e50;
+}
+div#stats section.coachs div.second legend {
+    color: #fab13b;
+}
+div#stats section.coachs div.third legend {
+    color: #70ad88;
+}
+div#stats section.coachs div.fourth legend {
+    color: #4bcddd;
+}
+
+
+/****************************
+*         PIE CHART         *
+*****************************/
+
+div#stats div#pie {
+    width: 200px;
+    margin: 35px auto 0 auto;
 }
 
 /****************************
